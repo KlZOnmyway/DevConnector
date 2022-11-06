@@ -13,6 +13,7 @@ import AddEducation from './components/profile-forms/AddEducation';
 import AddExperience from './components/profile-forms/AddExperience';
 import Profiles from './components/profiles/Profiles';
 import Profile from './components/profile/Profile';
+import NotFound from './components/layout/NotFound'
 import Post from './components/post/Post';
 import Posts from './components/posts/Posts';
 import { loadUser } from './actions/auth';
@@ -60,6 +61,7 @@ const App = () => {
           />
           <Route path="posts" element={<PrivateRoute component={Posts} />} />
           <Route path="posts/:id" element={<PrivateRoute component={Post} />} />
+          <Route path="/*" element={<NotFound />} />
           </Routes>
     </Router>
     </Provider>
