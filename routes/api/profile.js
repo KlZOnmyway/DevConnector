@@ -7,10 +7,10 @@ const auth = require('../../middleware/Auth')
 const User = require('../../models/User');
 const config = require('config');
 const request = require("request");
-
+const axios = require('axios')
 // @route   Get api/profile/me
 // @desc    Test route
-// @access  Public
+// @access  Private
 router.get('/me', auth, async (req,res) =>{
     try
     {
@@ -94,7 +94,7 @@ router.post('/', [ auth, [
                 return res.status(400).json({error : error.array()});
             }
 
-            const {company, status, location,  skills, website, bio, githubusername, linkedin, instagram} = req.body;
+            const {company, status, location,  skills, website, bio, githubusername, youtube, twitter, facebook, linkedin, instagram} = req.body;
             const profileFields = {};
             profileFields.user = req.user.id;
             if(company) profileFields.company = company;
@@ -105,18 +105,29 @@ router.post('/', [ auth, [
             if(bio) profileFields.bio = bio;
             if(githubusername) profileFields.githubusername = githubusername;
 
+            const checkUrl = (url) => {
+                if (url.includes("http://") || url.includes("https://")) {
+                    return url;
+                } else {
+                    return `https://${url}`;
+                }
+            };
+
             profileFields.social = {};
-            if(linkedin)  profileFields.social.linkedin = linkedin;
-            if(instagram) profileFields.social.instagram = instagram;
+            if(linkedin)  profileFields.social.linkedin = checkUrl(linkedin);
+            if(youtube)  profileFields.social.youtube = checkUrl(youtube);
+            if(instagram) profileFields.social.instagram = checkUrl(instagram);
+            if(twitter) profileFields.social.twitter = checkUrl(twitter);
+            if(facebook) profileFields.social.facebook = checkUrl(facebook);
             
             let profile = await Profile.findOne({user : req.user.id});
+            
             if (profile) {
-                Profile.findOneAndUpdate(
-                    {user : req.user.id},
-                    profileFields,
-                    {new: true}
-                )
-
+                let profile = await Profile.findOneAndUpdate(
+                    { user: req.user.id },
+                    { $set: profileFields },
+                    { new: true, upsert: true, setDefaultsOnInsert: true }
+                );
                 return res.json(profile);
             }
 
@@ -146,21 +157,10 @@ router.put("/experience", [auth, [
     if (!error) {
         return res.status(400).json({error : error.array()});
     }
-    const {title, company, location, from, to, current, description} = req.body;
-
-    const newExp = {
-        title,
-        company,
-        location,
-        from,
-        to,
-        current,
-        description
-    }
     
     try{
         const profile = await Profile.findOne({user : req.user.id});
-        profile.experience.unshift(newExp);
+        profile.experience.unshift(req.body);
         await profile.save();
 
         res.json(profile);
@@ -203,16 +203,9 @@ router.put('/education', [auth, [
             return res.status(400).send({error: error.array()})
         }
 
-        const {school, from, to, degree} = req.body;
-        const newEdu = {
-            school,
-            from,
-            to,
-            degree
-        }
     try {
         const profile = await Profile.findOne({user : req.user.id})
-        profile.education.unshift(newEdu)
+        profile.education.unshift(req.body)
         await profile.save()
         res.json(profile)
 
@@ -244,26 +237,20 @@ router.delete('/education/:edu_id', [auth], async (req, res) => {
 // @desc    get github repo
 // @access  Public
 
-router.get("/github/:username", async (req, res) => {
+router.get('/github/:username', async (req, res) => {
     try {
-        const options = {
-            uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&
-            sort=created:asc&client_id=${config.get('githubClientId')}&client_secret=
-            ${config.get('githubSecret')}}`,
-            method: 'GET',
-            hearders: {'user-agent' : 'node.js'}
-        };
-
-        request(options, (error, response, body) => {
-            if(error) console.error(error);
-
-            if(response.statusCode != 200){
-                res.status(404).send({msg : "github repo not found"})
-            }
-        })
-    } catch (err) {
-        console.error (err.message)
-        res.status(500).send("Server error")
+    //   const uri = encodeURI(
+    //     `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
+    //   );
+      const headers = {
+        'user-agent': 'node.js',
+        Authorization: `token ${config.get('githubToken')}`
+      };
+      const gitHubResponse = await axios({method:'get', url:`https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`, headers:headers});
+      return res.json(gitHubResponse.data);
+    } catch (err) { 
+      console.error(err.message);
+      return res.status(404).json({ msg: 'No Github profile found' });
     }
-})
+  });
 module.exports = router
