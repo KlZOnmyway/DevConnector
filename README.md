@@ -21,3 +21,8 @@ Now you can open up a new tab in your browser and see the application in `http:/
 The backend APIs are developed via Express.js with MongoDB.  
 The frontend is developed in React. The state manipulation are wrapped in Redux.
 
+## Use instruction
+In order to go through the function of the app, please first click the register button on the up right corner and sign up an account.  
+Then you will be navigated to personal dashboard where you can edit your profile, experiences and educations.
+Afterwards, you can create a new post, thumb up your post and add your own comment. 
+You can then create another account and see the previous one's profile and post.
