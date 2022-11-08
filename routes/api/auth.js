@@ -40,7 +40,7 @@ router.post('/',
             if (!user) {
                 return res
                     .status(400)
-                    .json({errors: [{ msg: 'Invalid Credentials'}]})
+                    .json({error: [{ msg: 'Invalid Credentials'}]})
             }
 
             //match password
@@ -48,7 +48,7 @@ router.post('/',
             if (!isMatch) {
                 return res
                     .status(400)
-                    .json({errors: [{ msg: 'Invalid Credentials'}]}) 
+                    .json({error: [{ msg: 'Invalid Credentials'}]}) 
             }
             //Return jsonwebtoken
             const payload = {
