@@ -1,6 +1,0 @@
-{
-    "mongoURI" : "mongodb+srv://klz:klz@cluster0.snitr7k.mongodb.net/?retryWrites=true&w=majority",
-    "jwtSecret" : "mysecrettoken",
-    "githubClientId" : "kunlinzNS3",
-    "githubSecret" : "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"
-}
