@@ -1,5 +1,5 @@
 ﻿# DevConnector
-This web application is a MERN based project targeting at implementing basic functions of profile sharing, short literal blog posting and comment. The content follows the [Udemy course](https://www.udemy.com/course/mern-stack-front-to-back/).
+This web application is a MERN based social APP targeting at implementing basic functions of profile sharing, short literal blog posting and comment. The content follows the [Udemy course](https://www.udemy.com/course/mern-stack-front-to-back/).
 
 ## How to run
 git clone the repo and cd to the directory.  
