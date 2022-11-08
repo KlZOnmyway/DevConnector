@@ -11,7 +11,7 @@ Create a file named `default.json` in the Config folder with content:
     "githubToken" : "YOUR GITHUB TOKEN"
 }
 ```
-Then run the command:
+Then run the command:  
 For Windows powershell: `npm install ; cd client ; npm install ; cd .. ; npm run dev`  
 For Linux: `npm install && cd client && npm install && cd .. && npm run dev`  
 
