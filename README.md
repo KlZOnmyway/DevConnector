@@ -12,7 +12,8 @@ Create a file named `default.json` in the Config folder with content:
 }
 ```
 Then run the command:
-`npm install && cd client && npm install && cd .. && npm run dev`
+For Windows powershell: `npm install ; cd client ; npm install ; cd .. ; npm run dev`  
+For Linux: `npm install && cd client && npm install && cd .. && npm run dev`  
 
 Now you can open up a new tab in your browser and see the application in `http://localhost:3000`
 
