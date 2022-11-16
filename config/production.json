@@ -2,5 +2,5 @@
     "mongoURI" : "mongodb+srv://klz:klz@cluster0.snitr7k.mongodb.net/?retryWrites=true&w=majority",
     "jwtSecret" : "mysecrettoken",
     "githubClientId" : "kunlinz",
-    "githubToken" : "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"
+    "githubToken" : "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"
 }
